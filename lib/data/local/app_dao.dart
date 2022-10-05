@@ -7,10 +7,7 @@ import 'package:sembast/sembast.dart';
 import 'package:sembast/timestamp.dart';
 import 'package:sleepaid/data/auth_data.dart';
 import 'package:sleepaid/data/local/app_database.dart';
-import 'package:sleepaid/data/network/binaural_beat_parameter_response.dart';
 import 'package:sleepaid/data/network/electro_stimulation_parameter_response.dart';
-import 'package:sleepaid/data/network/sleep_analysis_response.dart';
-import 'package:sleepaid/data/network/sleep_condition_parameter_response.dart';
 import 'package:sleepaid/util/app_config.dart';
 import 'package:sleepaid/util/app_themes.dart';
 import 'package:sleepaid/util/functions.dart';
@@ -18,17 +15,8 @@ import 'package:sleepaid/util/functions.dart';
 import '../network/parameter_response.dart';
 
 class AppBaseData {
-  List<SleepConditionParameterResponse> sleepConditionParameters = [];
   List<ElectroStimulationParameterResponse> electroStimulationParameters = [];
   /// 사용자 맞춤설정 우선 랜덤 처리
-  BinauralBeatParameterResponse binauralBeatUserTargetParameter = BinauralBeatParameterResponse(id:0, onDisplay:true, name:"사용자 맞춤 설정", toneFrequency:900, beatFrequency: 40);
-  List<BinauralBeatParameterResponse> binauralBeatParameters = [];
-  SleepAnalysisResponse? sleepConditionAnalysis;
-
-  /// 저장되어 있는 어제의 수면 컨디션 숫자
-  int getSleepConditionYesterdayItemSet() {
-    return sleepConditionAnalysis?.itemSet.length??0;
-  }
 }
 
 class DebugData{
@@ -102,21 +90,6 @@ class AppDAO{
     await setUserCreated(null);
     await resetSNSLogin();
     await setLastSleepCondition(null, null);
-  }
-
-  /// 컨디션 작성 날짜
-  /// 어제 기준으로 작성
-  static String getConditionDateString({SleepAnalysisResponse? response, DateTime? selectedDate}) {
-    var dateFormat = DateFormat("yyyy년 MM월 dd일");
-    if(response != null){
-      List<String> dateStrings = response.date.split("-");
-      return "${dateStrings[0]}년 ${dateStrings[1]}월 ${dateStrings[2]}일";
-    }else if(selectedDate != null){
-      return dateFormat.format(selectedDate);
-    }else{
-      var yesterday = DateTime.now().subtract(const Duration(days: 1));
-      return dateFormat.format(yesterday);
-    }
   }
 
   static Future setUserToken(String? token) async{

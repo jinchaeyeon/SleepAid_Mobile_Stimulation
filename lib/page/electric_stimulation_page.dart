@@ -84,17 +84,6 @@ class SettingRecipeState extends State<ElectricStimulationPage>
                                           alignment: Alignment.center,
                                           child: Text("목", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textBlack))
                                       ))),
-                              Expanded(
-                                  child: InkWell(
-                                      onTap: (){
-                                        setNeckMode(false);
-                                      },
-                                      child: Container(
-                                          width: double.maxFinite,
-                                          height: 50,
-                                          alignment: Alignment.center,
-                                          child: Text("이마", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textBlack))
-                                      ))),
                             ]
                         )
                     ),
@@ -112,18 +101,6 @@ class SettingRecipeState extends State<ElectricStimulationPage>
                                           width: double.maxFinite,
                                           height: 3,
                                           color: isNeckMode?AppColors.borderGrey:Theme.of(context).colorScheme.secondary,
-                                          alignment: Alignment.center,
-                                          child: SizedBox.shrink()
-                                      ))),
-                              Expanded(
-                                  child: InkWell(
-                                      onTap: (){
-
-                                      },
-                                      child: Container(
-                                          width: double.maxFinite,
-                                          height: 3,
-                                          color: !isNeckMode?AppColors.borderGrey:Theme.of(context).colorScheme.secondary,
                                           alignment: Alignment.center,
                                           child: SizedBox.shrink()
                                       ))),
@@ -593,11 +570,6 @@ class SettingRecipeState extends State<ElectricStimulationPage>
         return true;
       }
     }
-    if(!isNeckMode){
-      if( context.read<BluetoothProvider>().connectorForehead.connectedDeviceId !=""){
-        return true;
-      }
-    }
     return false;
   }
 
@@ -644,28 +616,22 @@ class SettingRecipeState extends State<ElectricStimulationPage>
     if(isNeckMode && context.read<BluetoothProvider>().deviceNeck == null){
       return ;
     }
-    if(!isNeckMode && context.read<BluetoothProvider>().deviceForehead == null){
-      return ;
-    }
     // 실행정지
-    context.read<BluetoothProvider>().sendData(isNeckMode?BODY_TYPE.NECK:BODY_TYPE.FOREHEAD,"910|0\n");
+    context.read<BluetoothProvider>().sendData(BODY_TYPE.NECK,"910|0\n");
     // 펄스폭 설정 10~200 단위는 us
-    context.read<BluetoothProvider>().sendData(isNeckMode?BODY_TYPE.NECK:BODY_TYPE.FOREHEAD, "102|" + (
+    context.read<BluetoothProvider>().sendData(BODY_TYPE.NECK, "102|" + (
         getDataValue(0, recipe?.intensity??0)).toString() + "\n");
     // 펄스간격 설정 n : 4~200 단위는 ms 해상도 4 (아마도 최소단위 4로 끊어서 보내야 하는 것으로 보임)
-    context.read<BluetoothProvider>().sendData(isNeckMode?BODY_TYPE.NECK:BODY_TYPE.FOREHEAD,"104|" + (getDataValue(1, recipe?.interval??0)).toString() + "\n");
+    context.read<BluetoothProvider>().sendData(BODY_TYPE.NECK,"104|" + (getDataValue(1, recipe?.interval??0)).toString() + "\n");
     // n : 명령값, 1~4095 펄스크기 설정
-    context.read<BluetoothProvider>().sendData(isNeckMode?BODY_TYPE.NECK:BODY_TYPE.FOREHEAD,"106|" + (getDataValue(2, recipe?.height??0)).toString().toString() + "\n");
+    context.read<BluetoothProvider>().sendData(BODY_TYPE.NECK,"106|" + (getDataValue(2, recipe?.height??0)).toString().toString() + "\n");
     // context.read<BluetoothProvider>().sendData(isNeckMode?BODY_TYPE.NECK:BODY_TYPE.FOREHEAD,"109|1\n");
     // context.read<BluetoothProvider>().sendData(isNeckMode?BODY_TYPE.NECK:BODY_TYPE.FOREHEAD,"909|1\n");
-    context.read<BluetoothProvider>().sendData(isNeckMode?BODY_TYPE.NECK:BODY_TYPE.FOREHEAD,"910|2\n");
+    context.read<BluetoothProvider>().sendData(BODY_TYPE.NECK,"910|2\n");
   }
 
   isSelectedRecipe(ElectroStimulationParameterResponse recipe) {
     if(isNeckMode && context.read<BluetoothProvider>().deviceNeck == null){
-      return false;
-    }
-    if(!isNeckMode && context.read<BluetoothProvider>().deviceForehead == null){
       return false;
     }
     if(

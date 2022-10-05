@@ -23,8 +23,7 @@ class HomePage extends BaseStatefulWidget {
   HomeState createState() => HomeState();
 }
 
-class HomeState extends State<HomePage>
-    with WidgetsBindingObserver {
+class HomeState extends State<HomePage> with WidgetsBindingObserver {
   Size? size;
   bool isInit = true;
 
@@ -64,21 +63,19 @@ class HomeState extends State<HomePage>
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     size ??= MediaQuery.of(context).size;
     checkNextDay(context);
 
     return Scaffold(
         extendBody: true,
         body: SafeArea(
-            child: getBaseWillScope(context, mainContent(), onWillScope: (){
-              showExitDialog(context);
-            })
-        )
-    );
+            child: getBaseWillScope(context, mainContent(), onWillScope: () {
+          showExitDialog(context);
+        })));
   }
 
-  Widget mainContent(){
+  Widget mainContent() {
     return Container(
         width: double.maxFinite,
         height: double.maxFinite,
@@ -87,26 +84,25 @@ class HomeState extends State<HomePage>
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: <Color>[Theme.of(context).colorScheme.primaryVariant, Theme.of(context).colorScheme.secondaryVariant],
+            colors: <Color>[
+              Theme.of(context).colorScheme.primaryVariant,
+              Theme.of(context).colorScheme.secondaryVariant
+            ],
           ),
-        ),                  child: AspectRatio(
-        aspectRatio: getAspectRatio(context),
-        child: Container(
-            padding: const EdgeInsets.symmetric(horizontal:20),
-            child: SingleChildScrollView(
-                child: SizedBox(
-                    width: double.maxFinite,
-                    height: geteDeviceHeight(context) - 30,
-                    child: homeContent(context)
-                )
-            )
-        )
-    )
-    );
+        ),
+        child: AspectRatio(
+            aspectRatio: getAspectRatio(context),
+            child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: SingleChildScrollView(
+                    child: SizedBox(
+                        width: double.maxFinite,
+                        height: geteDeviceHeight(context) - 150,
+                        child: homeContent(context))))));
   }
 
   // 데이터 수집/비수집 변환
-  Future<void> toggleCollectingData() async{
+  Future<void> toggleCollectingData() async {
     await context.read<BluetoothProvider>().toggleDataCollecting();
   }
 
@@ -114,21 +110,20 @@ class HomeState extends State<HomePage>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Expanded(child: SizedBox.shrink(),),
+        const Expanded(
+          child: SizedBox.shrink(),
+        ),
         Stack(
           children: [
             Container(
-                child:Column(
-                    children: [
-                      SoundWidget(
-                        soundController: controllerLeft,
-                      ),
-                      SoundWidget(
-                        soundController: controllerRight,
-                      ),
-                    ]
-                )
-            ),
+                child: Column(children: [
+              SoundWidget(
+                soundController: controllerLeft,
+              ),
+              SoundWidget(
+                soundController: controllerRight,
+              ),
+            ])),
             Container(
                 height: 70,
                 width: double.maxFinite,
@@ -138,7 +133,7 @@ class HomeState extends State<HomePage>
                   children: [
                     Container(
                       height: 70,
-                      padding: const EdgeInsets.only(left:20, right:20),
+                      padding: const EdgeInsets.only(left: 20, right: 20),
                       alignment: Alignment.center,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -154,237 +149,127 @@ class HomeState extends State<HomePage>
                             ),
                           ),
                           Container(
-                              width:80, height: 80,
-
+                              width: 80,
+                              height: 80,
                               child: InkWell(
-                                  onTap:(){
+                                  onTap: () {
                                     Navigator.pushNamed(context, Routes.menu);
                                   },
                                   child: Container(
-                                      width:double.maxFinite, height: double.maxFinite,
+                                      width: double.maxFinite,
+                                      height: double.maxFinite,
                                       // color: Colors.red,
-                                      padding: const EdgeInsets.only(left:40, right:0, top: 25, bottom: 25),
-                                      child: Image.asset(AppImages.menu, fit: BoxFit.contain, width: 20, height: 20,)
-                                  )
-                              )
-                          )
+                                      padding: const EdgeInsets.only(
+                                          left: 40,
+                                          right: 0,
+                                          top: 25,
+                                          bottom: 25),
+                                      child: Image.asset(
+                                        AppImages.menu,
+                                        fit: BoxFit.contain,
+                                        width: 20,
+                                        height: 20,
+                                      ))))
                         ],
                       ),
                     )
                   ],
-                )
-            )
+                ))
           ],
         ),
-        const Expanded(child: SizedBox.shrink(),),
+        const Expanded(
+          child: SizedBox.shrink(),
+        ),
         SizedBox(
           width: double.maxFinite,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              context.watch<BluetoothProvider>().connectorNeck.connectedDeviceId != "" ||
-              context.watch<BluetoothProvider>().connectorForehead.connectedDeviceId != ""
-              ?contentButton(context,AppImages.bioSignal, '실시간 생체신호', true, '실시간 신호 출력중', '', onTap:(context) {
-                Navigator.pushNamed(context, Routes.bodySignal);
-              })
-              :contentButton(context,AppImages.bioSignal, '실시간 생체신호', false, '실시간 신호 출력중지', '', onTap:(context) {
-                Navigator.pushNamed(context, Routes.bodySignal);
-              }),
-              context.watch<BluetoothProvider>().connectorNeck.connectedDeviceId != "" ||
-                  context.watch<BluetoothProvider>().connectorForehead.connectedDeviceId != ""
-              ?contentButton(context,AppImages.electricalStimulation, '전기자극설정', true, '전기 자극 출력증', '',onTap:(context){
-                Navigator.pushNamed(context, Routes.settingRecipe);
-              })
-              :contentButton(context,AppImages.electricalStimulation, '전기자극설정', false, '전기 자극 출력증지', '',onTap:(context){
-                Navigator.pushNamed(context, Routes.settingRecipe);
-              }),
+              context
+                          .watch<BluetoothProvider>()
+                          .connectorNeck
+                          .connectedDeviceId !=
+                      ""
+                  ? contentButton(context, AppImages.electricalStimulation,
+                      '전기자극설정', true, '전기 자극 출력증', '', onTap: (context) {
+                      Navigator.pushNamed(context, Routes.settingRecipe);
+                    })
+                  : contentButton(context, AppImages.electricalStimulation,
+                      '전기자극설정', false, '전기 자극 출력증지', '', onTap: (context) {
+                      Navigator.pushNamed(context, Routes.settingRecipe);
+                    }),
             ],
           ),
         ),
-        const Expanded(child: SizedBox.shrink(),),
-        SizedBox(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ( context.watch<BluetoothProvider>().connectorNeck.connectedDeviceId != "" ||
-                  context.watch<BluetoothProvider>().connectorForehead.connectedDeviceId != "" )
-              && context.watch<MainProvider>().isPlayingBeatMode
-              ?contentButton(context,AppImages.binauralBeat, 'Binaural Beat', true, 'Binaural Beat 출력중', '',onTap:(context) {
-                stopBeat().then((value){
-                  Navigator.pushNamed(context, Routes.binauralBeat).then((value){
-                    checkPlayBeat();
-                  });
-                });
-              })
-              :contentButton(context,AppImages.binauralBeat, 'Binaural Beat', false, 'Binaural Beat 출력중지', '',onTap:(context) {
-                stopBeat().then((value){
-                  Navigator.pushNamed(context, Routes.binauralBeat).then((value){
-                    checkPlayBeat();
-                  });
-                });
-              }),
-              contentButton(context,AppImages.sleepAnalysis, '수면분석', false, '새로운 수면 정보 확인', '', onTap:(context) {
-                Navigator.pushNamed(context, Routes.calendar);
-              },),
-            ],
-          ),
+        const Expanded(
+          child: SizedBox.shrink(),
         ),
-        const Expanded(child: SizedBox.shrink(),),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            context.watch<BluetoothProvider>().connectorNeck.connectedDeviceId != ""
-            ?contentButton(context,AppImages.bluetoothConnect, '기기 연결 (목)', true, '배터리 잔량 ${"90"}%', '', onTap:(context) {
-              //todo
-              // Navigator.pushNamed(context, routeSleepAnalysis);
-            })
-            :contentButton(context,AppImages.bluetoothConnect, '기기 연결 (목)', false, '배터리 잔량 -', '', onTap:(context) {
-              //todo
-              // Navigator.pushNamed(context, routeSleepAnalysis);
-            }),
-            context.watch<BluetoothProvider>().connectorForehead.connectedDeviceId != ""
-            ?contentButton(context,AppImages.bluetoothDisconnect, '기기 연결 (이마)', true, '배터리 잔량 ${"90"}%', '', onTap:(context) {
-              //todo
-              // Navigator.pushNamed(context, routeSleepAnalysis);
-            },)
-            :contentButton(context,AppImages.bluetoothDisconnect, '기기 연결 (이마)', false, '배터리 잔량 -', '', onTap:(context) {
-              //todo
-              // Navigator.pushNamed(context, routeSleepAnalysis);
-            },)
+            context
+                        .watch<BluetoothProvider>()
+                        .connectorNeck
+                        .connectedDeviceId !=
+                    ""
+                ? contentButton(context, AppImages.bluetoothConnect,
+                    '기기 연결 (목)', true, '배터리 잔량 ${"90"}%', '', onTap: (context) {
+                    //todo
+                    // Navigator.pushNamed(context, routeSleepAnalysis);
+                  })
+                : contentButton(context, AppImages.bluetoothConnect,
+                    '기기 연결 (목)', false, '배터리 잔량 -', '', onTap: (context) {
+                    //todo
+                    // Navigator.pushNamed(context, routeSleepAnalysis);
+                  })
           ],
         ),
-        const Expanded(child: SizedBox.shrink(),),
-       InkWell(
-         onTap:() async {
-           await _action(Routes.conditionReview);
-           setState(() {});
-         },
-         child:  Container(
-           height: 150,
-           padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-           child: Stack(
-             children: [
-               Container(
-                 width: double.maxFinite,
-                 height: 120,
-                 padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
-                 decoration: BoxDecoration(
-                   color: Theme.of(context).cardColor,
-                   borderRadius: BorderRadius.circular(14),
-                 ),
-                 child: Column(
-                   crossAxisAlignment: CrossAxisAlignment.start,
-                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                   children: [
-                     Text(
-                       AppDAO.getConditionDateString(response: AppDAO.baseData.sleepConditionAnalysis),
-                       style: Theme.of(context).textTheme.bodyText1,
-                     ),
-                     Text(
-                       '수면컨디션을 작성해주세요.',
-                       style: Theme.of(context).textTheme.bodyText1,
-                     ),
-                     RichText(
-                       text: TextSpan(
-                         style: const TextStyle(
-                           fontSize: 14,
-                           // fontFamily: Util.notoSans,
-                           fontWeight: FontWeight.w400,
-                         ),
-                         children: [
-                           TextSpan(
-                             text: AppDAO.baseData.getSleepConditionYesterdayItemSet().toString().padLeft(2,'0'),
-                             style: TextStyle(color: AppColors.subTextBlack),
-                           ),
-                           TextSpan(
-                             text: ' / ${AppDAO.baseData.sleepConditionParameters.length.toString().padLeft(2,'0')}',
-                             style: TextStyle(color: AppColors.textGrey),
-                           )
-                         ],
-                       ),
-                     ),
-                   ],
-                 ),
-               ),
-               Positioned(
-                 bottom: 0,
-                 left: 0,
-                 right: 0,
-                 child: Container(
-                   child:Center(
-                     child: GestureDetector(
-                       onTap:() async {
-                         //todo
-                         await toggleCollectingData();
-                         // Navigator.pushNamed(context, routeSleepCondition);
-                       },
-                       child: SizedBox(
-                         width: 52,
-                         height: 52,
-                         child: AnimatedRotation(
-                             turns: context.watch<BluetoothProvider>().isDataCollecting?0:0.125,
-                             duration: const Duration(milliseconds: 100),
-                             child: InkWell(
-                               onTap:() async {
-                                 await toggleCollectingData();
-                               },
-                               child: Image.asset(AppImages.add),
-                             )
-                         ),
-                       ),
-                     )
-                   )
-                 ),
-               )
-             ],
-           ),
-         )
-       ),
       ],
     );
   }
 
-  Widget contentButton(BuildContext context, String image, String title, bool isOn, String state, String route, {required Null Function(BuildContext context) onTap}) {
+  Widget contentButton(BuildContext context, String image, String title,
+      bool isOn, String state, String route,
+      {required Null Function(BuildContext context) onTap}) {
     return Expanded(
       flex: 1,
       child: InkWell(
-        onTap:(){
-          onTap(context);
-        },
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          width: _getItemWidth(context),
-          height: _getItemHeight(context),
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(26),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(bottom: 10),
-                width: 38,
-                height: 38,
-                child: Image.asset(image, fit: BoxFit.contain),
-              ),
-              Text(
-                title,
-                style: TextStyle(
-                  overflow: TextOverflow.clip,
-                  color: Theme.of(context).textSelectionTheme.selectionColor,
-                  fontSize: getFontSize(context, 13),
-                  // fontFamily: Util.notoSans,
-                  fontWeight: FontWeight.w400,
+          onTap: () {
+            onTap(context);
+          },
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            width: _getItemWidth(context),
+            height: _getItemHeight(context),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.circular(26),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  width: 38,
+                  height: 38,
+                  child: Image.asset(image, fit: BoxFit.contain),
                 ),
-              ),
-              stateContainer(state, isOn),
-            ],
-          ),
-        )
-      ),
+                Text(
+                  title,
+                  style: TextStyle(
+                    overflow: TextOverflow.clip,
+                    color: Theme.of(context).textSelectionTheme.selectionColor,
+                    fontSize: getFontSize(context, 13),
+                    // fontFamily: Util.notoSans,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                stateContainer(state, isOn),
+              ],
+            ),
+          )),
     );
   }
 
@@ -417,62 +302,58 @@ class HomeState extends State<HomePage>
 
   getAspectRatio(BuildContext context) {
     var portrait = MediaQuery.of(context).orientation;
-    if(portrait == Orientation.portrait){
-      return 280/560;
+    if (portrait == Orientation.portrait) {
+      return 280 / 560;
     }
-    return 560/280;
-
+    return 560 / 280;
   }
 
   double geteDeviceHeight(BuildContext context) {
     var portrait = MediaQuery.of(context).orientation;
-    if(portrait == Orientation.portrait){
+    if (portrait == Orientation.portrait) {
       return MediaQuery.of(context).size.height;
     }
     return MediaQuery.of(context).size.height * 2;
   }
 
   ///화면이 불려왔을 때 날짜가 변경되면 데이터 갱신 요청
-  void checkNextDay(BuildContext context) {
-
-  }
+  void checkNextDay(BuildContext context) {}
 
   double _getItemWidth(BuildContext context) {
-    if(size==null) return 130;
-    if(size!.width > 300) return (size!.width / 2) - 60;
+    if (size == null) return 130;
+    if (size!.width > 300) return (size!.width / 2) - 60;
     return 130;
   }
 
   double _getItemHeight(BuildContext context) {
-    if(size==null) return 130;
-    if(size!.height/ 4 > 130) return (size!.height/ 4) - 60;
+    if (size == null) return 130;
+    if (size!.height / 4 > 130) return (size!.height / 4) - 60;
     return 130;
   }
 
   /// 플레이 중이라면 일시정지 또는 일시정지 해제
-  Future<void> pauseBinauralBeatState(bool pause) async{
+  Future<void> pauseBinauralBeatState(bool pause) async {
     await context.read<DataProvider>().pauseBinauralBeatState(pause);
   }
 
   /// 1. 블루투스 권한 확인
   /// todo 2. 블루투스 기연결 기기 있는지 확인
   /// todo 3. 블뤁스 연결 상태에 따라 출력중 상태 확인
-  Future<void> checkBluetoothState() async{
+  Future<void> checkBluetoothState() async {
     //블루투스 권한 상태 체크
     await checkBluetoothPermission();
   }
 
-  Future<void> checkBluetoothPermission() async{
-    await Future.delayed(const Duration(milliseconds: 200),() async {
-      if(mounted){
+  Future<void> checkBluetoothPermission() async {
+    await Future.delayed(const Duration(milliseconds: 200), () async {
+      if (mounted) {
         await context.read<BluetoothProvider>().checkBluetoothPermission();
       }
     });
-
   }
 
   /// todo 블루투스, 비트등을 일시정지 처리
-  Future<void> stopEveryStateChecker() async{
+  Future<void> stopEveryStateChecker() async {
     log("stopEveryStateChecker");
     context.read<DataProvider>().setLoading(true);
     await pauseBinauralBeatState(true);
@@ -480,7 +361,7 @@ class HomeState extends State<HomePage>
     context.read<DataProvider>().setLoading(false);
   }
 
-  Future<void> startEveryStateChecker() async{
+  Future<void> startEveryStateChecker() async {
     log("startEveryStateChecker");
     context.read<DataProvider>().setLoading(true);
     await context.read<DataProvider>().loadParameters();
@@ -490,19 +371,11 @@ class HomeState extends State<HomePage>
     context.read<DataProvider>().setLoading(false);
   }
 
-  Future _action(String actionType) async {
-    if(actionType == Routes.conditionReview){
-      await checkParameters();
-      await Navigator.pushNamed(context, Routes.conditionReview);
-    }
-  }
-
-  Future checkParameters() async{
+  Future checkParameters() async {
     bool isValidParameters = true;
-    if(AppDAO.baseData.sleepConditionParameters.isEmpty) isValidParameters = false;
-    if(AppDAO.baseData.binauralBeatParameters.isEmpty) isValidParameters = false;
-    if(AppDAO.baseData.electroStimulationParameters.isEmpty) isValidParameters = false;
-    if(!isValidParameters){
+    if (AppDAO.baseData.electroStimulationParameters.isEmpty)
+      isValidParameters = false;
+    if (!isValidParameters) {
       context.read<DataProvider>().setLoading(true);
       await context.read<DataProvider>().loadParameters();
       context.read<DataProvider>().setLoading(false);
@@ -514,10 +387,12 @@ class HomeState extends State<HomePage>
   }
 
   Future<void> checkPlayBeat() async {
-    await context.read<MainProvider>().updateSoundControllers(controllerLeft, controllerRight);
-    if(context.read<MainProvider>().isPlayingBeatMode){
+    await context
+        .read<MainProvider>()
+        .updateSoundControllers(controllerLeft, controllerRight);
+    if (context.read<MainProvider>().isPlayingBeatMode) {
       setState(() {});
-      Future.delayed(const Duration(milliseconds: 800),() async {
+      Future.delayed(const Duration(milliseconds: 800), () async {
         await context.read<MainProvider>().playingBeatMode();
       });
     }

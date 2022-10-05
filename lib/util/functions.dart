@@ -8,7 +8,6 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/src/provider.dart';
 import 'package:sleepaid/data/ble_device.dart';
 import 'package:sleepaid/data/local/app_dao.dart';
-import 'package:sleepaid/page/realtime_signal_page.dart';
 import 'package:sleepaid/provider/bluetooth_provider.dart';
 import 'package:sleepaid/provider/data_provider.dart';
 import '../app_routes.dart';

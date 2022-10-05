@@ -270,22 +270,7 @@ class BluetoothConnectState extends State<BluetoothConnectPage>
                           width: 1,
                           height: 100,
                           color:AppColors.borderGrey,
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap:() async {
-                              Navigator.pop(context);
-                              context.read<DataProvider>().setLoading(true);
-                              context.read<BluetoothProvider>().choiceBodyPosition(BODY_TYPE.FOREHEAD, device: device);
-                              context.read<DataProvider>().setLoading(false);
-                            },
-                            child:Container(
-                                height: 100,
-                                alignment: Alignment.center,
-                                child: Text("이마", style:TextStyle(fontSize:20, color: AppColors.textBlack, fontWeight: FontWeight.bold))
-                            ),
-                          ),
-                        ),
+                        )
                       ]
                   )
                 ],

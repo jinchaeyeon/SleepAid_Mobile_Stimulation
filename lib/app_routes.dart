@@ -1,13 +1,8 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/src/provider.dart';
-import 'package:sleepaid/page/binaural_beat_page.dart';
-import 'package:sleepaid/page/calendar/calendar_detail_page.dart';
-import 'package:sleepaid/page/calendar/calendar_page.dart';
-import 'package:sleepaid/page/condition_review_page.dart';
 import 'package:sleepaid/page/email_login_page.dart';
 import 'package:sleepaid/page/push_setting_page.dart';
-import 'package:sleepaid/page/realtime_signal_page.dart';
 import 'package:sleepaid/page/electric_stimulation_page.dart';
 import 'package:sleepaid/page/signup/agreement_term_page.dart';
 import 'package:sleepaid/page/bluetooth_connect_page.dart';
@@ -30,15 +25,10 @@ class Routes{
   static const changePassword = ChangePasswordPage.ROUTE;
   static const menu = MenuPage.ROUTE;
   static const bluetoothConnect = BluetoothConnectPage.ROUTE;
-  static const conditionReview = ConditionReviewPage.ROUTE;
-  static const bodySignal = RealtimeSignalPage.ROUTE;
   static const settingRecipe = ElectricStimulationPage.ROUTE;
-  static const binauralBeat = BinauralBeatPage.ROUTE;
   static const licenseKey = LicenseKeyPage.ROUTE;
   static const signupWithEmail = EmailSignUpPage.ROUTE;
   static const agreementTerm = AgreementTermPage.ROUTE;
-  static const calendar = CalendarPage.ROUTE;
-  static const calendarDetail = CalendarDetailPage.ROUTE;
   static const push = PushSettingPage.ROUTE;
 
 
@@ -79,18 +69,8 @@ class Routes{
           return const AgreementTermPage();
         case Routes.bluetoothConnect:
           return const BluetoothConnectPage();
-        case Routes.conditionReview:
-          return const ConditionReviewPage();
-        case Routes.bodySignal:
-          return const RealtimeSignalPage();
-        case Routes.binauralBeat:
-          return const BinauralBeatPage();
         case Routes.settingRecipe:
           return const ElectricStimulationPage();
-        case Routes.calendar:
-          return const CalendarPage();
-        case Routes.calendarDetail:
-          return const CalendarDetailPage();
         case Routes.push:
           return const PushSettingPage();
         default:

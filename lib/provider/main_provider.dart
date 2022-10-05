@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:headset_connection_event/headset_event.dart';
 import 'package:sleepaid/data/local/app_dao.dart';
-import 'package:sleepaid/data/network/sleep_analysis_response.dart';
-import 'package:sleepaid/network/sleeping_analytics_service.dart';
 import 'package:sleepaid/util/functions.dart';
 import 'package:surround_sound/surround_sound.dart';
 
